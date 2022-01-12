@@ -1,0 +1,70 @@
+#define RCC_AHB1ENR *((int *)0x40023830)
+#define GPIOA_MODER *((int *)0x40020000)
+#define GPIOA_ODR *((int *)0x40020014)	
+#define GPIOC_MODER *((int *)0x40020800)
+#define GPIOC_ODR *((int *)0x40020814)	
+
+void LED_Init()
+{
+	RCC_AHB1ENR |= 0X5;
+	while(!(RCC_AHB1ENR & 0X5))
+	{
+		;
+	}
+	
+	GPIOA_MODER &= 0xFFFCFFFF;
+	GPIOA_MODER |= (0X1<<16);
+	GPIOA_ODR |= (0X1<<8);
+	
+	GPIOC_MODER &= 0XFFFFF3FF;
+	GPIOC_MODER |= (0X1<<10);
+	GPIOC_ODR |= (0X1<<5);
+}
+void toggle_LED()
+{
+	if(GPIOA_ODR & (0X1<<8))
+		GPIOA_ODR &= ~(0X1<<8);
+	else
+		GPIOA_ODR |= (0X1<<8);
+}
+void delay()
+{
+	int i=0;
+	for(i=0;i<84000;i++)
+	{
+		;
+	}
+}
+
+int main()
+{
+	int i=0,j=0;
+	LED_Init();
+	
+	while(1)
+	{
+		if(i<3)
+			toggle_LED();
+		else
+		{
+			GPIOA_ODR |= (0X1<<8);
+			if(i==5)
+				i=-1;
+		}
+		
+		if(j==0 || j==6)
+			GPIOC_ODR &= ~(0X1<<5);
+		else
+		{
+			GPIOC_ODR |= (0X1<<5);
+			if(j==16)
+				j=-1;
+		}
+		
+		i++;
+		j++;
+		delay();
+	}
+	
+	return 0;
+}
