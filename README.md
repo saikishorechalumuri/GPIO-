@@ -1,4 +1,4 @@
-# GPIO-
+# GPIO ( GENERAL PURPOSE INPUT OUTPUT )
 General purpose input output register its is a kind of device controller for microprocessor and input out pins 
 device controller is nothing but and input output controller 
 project1  1: 
